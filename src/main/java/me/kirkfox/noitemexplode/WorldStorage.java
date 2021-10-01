@@ -57,6 +57,10 @@ public class WorldStorage {
         }
     }
 
+    public static int getWorldsProtected() {
+        return worlds.size();
+    }
+
     public static boolean isProtectedWorld(World w) {
         return worlds.contains(w.getUID());
     }

@@ -1,5 +1,7 @@
 package me.kirkfox.noitemexplode;
 
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -8,6 +10,8 @@ import java.util.Objects;
 public final class NoItemExplode extends JavaPlugin {
 
     private static JavaPlugin plugin;
+
+    private static final int BSTATS_ID = 12928;
 
     @Override
     public void onEnable() {
@@ -21,6 +25,9 @@ public final class NoItemExplode extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Metrics metrics = new Metrics(this, BSTATS_ID);
+        metrics.addCustomChart(new SimplePie("worldsProtected", () -> String.valueOf(WorldStorage.getWorldsProtected())));
 
     }
 
