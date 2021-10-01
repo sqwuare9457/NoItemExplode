@@ -1,0 +1,12 @@
+name: NoItemExplode
+version: '${project.version}'
+main: me.kirkfox.noitemexplode.NoItemExplode
+api-version: 1.13
+author: Kirk Fox
+description: A plugin that can disable the destruction of items by explosions within a world
+commands:
+  noitemexplode:
+    description: Set whether or not NoItemExplode protects the current world from items being exploded
+    usage: /nie <on|off>
+    aliases: nie
+    permission: noitemexplode.set
