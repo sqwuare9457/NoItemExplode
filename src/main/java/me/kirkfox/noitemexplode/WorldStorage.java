@@ -34,6 +34,7 @@ public class WorldStorage {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void saveWorlds() throws IOException {
         Gson gson = new Gson();
         File file = new File(NoItemExplode.getPlugin().getDataFolder().getAbsolutePath() + "/worlds.json");
