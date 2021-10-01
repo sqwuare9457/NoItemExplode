@@ -27,7 +27,7 @@ public final class NoItemExplode extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this, BSTATS_ID);
-        metrics.addCustomChart(new SimplePie("worldsProtected", () -> String.valueOf(WorldStorage.getWorldsProtected())));
+        metrics.addCustomChart(new SimplePie("worldsProtected", WorldStorage::getWorldsProtected));
 
     }
 

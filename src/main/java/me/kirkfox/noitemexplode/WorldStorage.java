@@ -58,8 +58,18 @@ public class WorldStorage {
         }
     }
 
-    public static int getWorldsProtected() {
-        return worlds.size();
+    public static String getWorldsProtected() {
+        int w = worlds.size();
+        if (w < 6) {
+            return String.valueOf(w);
+        }
+        if (w < 11) {
+            return "6-10";
+        }
+        if (w < 21) {
+            return "11-20";
+        }
+        return ">20";
     }
 
     public static boolean isProtectedWorld(World w) {
