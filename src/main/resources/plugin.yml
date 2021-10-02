@@ -9,4 +9,11 @@ commands:
     description: Set whether or not NoItemExplode protects the current world from items being exploded
     usage: /nie <on|off>
     aliases: nie
-    permission: noitemexplode.set
+    permission: noitemexplode.view
+permissions:
+  noitemexplode.set:
+    default: op
+    children:
+      noitemexplode.view: true
+  noitemexplode.view:
+    default: op
