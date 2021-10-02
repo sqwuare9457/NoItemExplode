@@ -1,0 +1,4 @@
+protect-from-creeper-explosions: true
+protect-from-fireball-explosions: true
+protect-from-tnt-explosions: true
+protect-from-wither-explosions: true
