@@ -3,6 +3,7 @@ package me.kirkfox.noitemexplode;
 import me.kirkfox.noitemexplode.listener.EntityDamageByEntityListener;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public final class NoItemExplode extends JavaPlugin {
 
         try {
             WorldStorage.loadWorlds();
+            WorldStorage.loadChunks();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,6 +40,7 @@ public final class NoItemExplode extends JavaPlugin {
     public void onDisable() {
         try {
             WorldStorage.saveWorlds();
+            WorldStorage.saveChunks();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,5 +48,9 @@ public final class NoItemExplode extends JavaPlugin {
 
     public static JavaPlugin getPlugin() {
         return plugin;
+    }
+
+    public static Server getPluginServer() {
+        return plugin.getServer();
     }
 }

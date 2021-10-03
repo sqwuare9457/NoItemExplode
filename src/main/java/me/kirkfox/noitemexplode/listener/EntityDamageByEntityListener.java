@@ -12,7 +12,7 @@ public class EntityDamageByEntityListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if(e.getEntityType() == EntityType.DROPPED_ITEM && WorldStorage.isProtectedWorld(e.getEntity().getWorld()) &&
+        if(e.getEntityType() == EntityType.DROPPED_ITEM && WorldStorage.isProtectedChunk(e.getEntity().getLocation().getChunk()) &&
                 e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION &&
                 ConfigHandler.isProtectedEntity(e.getDamager().getType())) {
             e.setCancelled(true);

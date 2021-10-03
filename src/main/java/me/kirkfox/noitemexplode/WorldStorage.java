@@ -1,6 +1,7 @@
 package me.kirkfox.noitemexplode;
 
 import com.google.gson.Gson;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 
 import java.io.File;
@@ -8,27 +9,39 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 public class WorldStorage {
 
-    private static List<UUID> worlds = new ArrayList<>();
+    private static Set<World> worlds = new HashSet<>();
+    private static Set<Chunk> chunks = new HashSet<>();
 
-    public static void addWorld(World w) {
-        worlds.add(w.getUID());
+    public static void toggleWorld(World w) {
+        if ((worlds.contains(w))) {
+            worlds.remove(w);
+        } else {
+            worlds.add(w);
+        }
+        chunks.removeIf(c -> c.getWorld() == w);
         try {
             saveWorlds();
+            saveChunks();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void removeWorld(World w) {
-        worlds.remove(w.getUID());
+    public static void toggleChunk(Chunk c) {
+        if(chunks.contains(c)) {
+            chunks.remove(c);
+        } else {
+            chunks.add(c);
+        }
+
         try {
-            saveWorlds();
+            saveChunks();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +56,11 @@ public class WorldStorage {
         }
         file.createNewFile();
         FileWriter writer = new FileWriter(file, false);
-        gson.toJson(worlds, writer);
+        List<String> worldData = new ArrayList<>();
+        for(World w : worlds) {
+            worldData.add(w.getName());
+        }
+        gson.toJson(worldData, writer);
         writer.flush();
         writer.close();
     }
@@ -53,8 +70,46 @@ public class WorldStorage {
         File file = new File(NoItemExplode.getPlugin().getDataFolder().getAbsolutePath() + "/worlds.json");
         if (file.exists()) {
             FileReader reader = new FileReader(file);
-            UUID[] w = gson.fromJson(reader, UUID[].class);
-            worlds = new ArrayList<>(Arrays.asList(w));
+            String[] worldData = gson.fromJson(reader, String[].class);
+            Set<World> worldSet = new HashSet<>();
+            for(String w : worldData) {
+                worldSet.add(NoItemExplode.getPluginServer().getWorld(w));
+            }
+            worlds = worldSet;
+        }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void saveChunks() throws IOException {
+        Gson gson = new Gson();
+        File file = new File(NoItemExplode.getPlugin().getDataFolder().getAbsolutePath() + "/chunks.json");
+        if(!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        file.createNewFile();
+        FileWriter writer = new FileWriter(file, false);
+        List<String> chunkData = new ArrayList<>();
+        for(Chunk c : chunks) {
+            chunkData.add(c.getWorld().getName() + ":" + c.getX() + ":" + c.getZ());
+        }
+        gson.toJson(chunkData, writer);
+        writer.flush();
+        writer.close();
+    }
+
+    public static void loadChunks() throws IOException {
+        Gson gson = new Gson();
+        File file = new File(NoItemExplode.getPlugin().getDataFolder().getAbsolutePath() + "/chunks.json");
+        if (file.exists()) {
+            FileReader reader = new FileReader(file);
+            String[] chunkData = gson.fromJson(reader, String[].class);
+            Set<Chunk> chunkSet = new HashSet<>();
+            for(String c : chunkData) {
+                String[] data = c.split(":");
+                chunkSet.add(NoItemExplode.getPluginServer().getWorld(data[0])
+                        .getChunkAt(Integer.parseInt(data[1]), Integer.parseInt(data[2])));
+            }
+            chunks = chunkSet;
         }
     }
 
@@ -73,7 +128,11 @@ public class WorldStorage {
     }
 
     public static boolean isProtectedWorld(World w) {
-        return worlds.contains(w.getUID());
+        return worlds.contains(w);
+    }
+
+    public static boolean isProtectedChunk(Chunk c) {
+        return chunks.contains(c) ^ worlds.contains(c.getWorld());
     }
 
 }
