@@ -1,9 +1,12 @@
 package me.kirkfox.noitemexplode;
 
+import me.kirkfox.noitemexplode.command.NIECommand;
+import me.kirkfox.noitemexplode.command.NIETabCompleter;
 import me.kirkfox.noitemexplode.listener.EntityDamageByEntityListener;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Server;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -21,7 +24,10 @@ public final class NoItemExplode extends JavaPlugin {
 
         ConfigHandler.loadConfig(plugin);
 
-        Objects.requireNonNull(getCommand("noitemexplode")).setExecutor(new NIECommand());
+        PluginCommand cmd = Objects.requireNonNull(getCommand("noitemexplode"));
+        cmd.setExecutor(new NIECommand());
+        cmd.setTabCompleter(new NIETabCompleter());
+
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
 
         try {
