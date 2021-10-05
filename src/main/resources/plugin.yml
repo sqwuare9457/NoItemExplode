@@ -11,7 +11,16 @@ commands:
     aliases: nie
     permission: noitemexplode.view
 permissions:
-  noitemexplode.set:
+  noitemexplode.set.*:
+    default: op
+    children:
+      noitemexplode.set.world: true
+      noitemexplode.set.chunk: true
+  noitemexplode.set.world:
+    default: op
+    children:
+      noitemexplode.view: true
+  noitemexplode.set.chunk:
     default: op
     children:
       noitemexplode.view: true
