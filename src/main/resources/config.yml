@@ -1,4 +1,16 @@
-protect-from-creeper-explosions: true
-protect-from-fireball-explosions: true
-protect-from-tnt-explosions: true
-protect-from-wither-explosions: true
+# If set to false, the items listed in "filter" will not be protected while everything else will.
+# If set to true, only the items listed in "filter" will be protected.
+use-filter-as-whitelist: false
+
+# To add items to the filter, follow the format shown below using the item's data value.
+# (The current items are only examples and don't exist in game)
+# To view an item's data value, press F3+H in game then hover over the item in your inventory.
+filter:
+  - example_item
+  - chartreuse_wool
+
+protected-explosions:
+  creeper: true
+  fireball: true
+  tnt: true
+  wither: true
