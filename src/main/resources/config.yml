@@ -9,6 +9,8 @@ filter:
   - example_item
   - chartreuse_wool
 
+# For each setting, if set to true, the plugin will protect items from that type of explosion damage.
+# For example, if you only want to protect items from wither and wither skull explosions, only set "wither" to true.
 protected-explosions:
   creeper: true
   fireball: true
