@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class WorldStorage {
+public class RegionStorage {
 
     private static Set<World> worlds = new HashSet<>();
     private static Set<Chunk> chunks = new HashSet<>();
@@ -24,10 +24,10 @@ public class WorldStorage {
         } else {
             worlds.add(w);
         }
-        chunks.removeIf(c -> c.getWorld() == w);
+        boolean chunksReset = chunks.removeIf(c -> c.getWorld() == w);
         try {
             saveWorlds();
-            saveChunks();
+            if(chunksReset) saveChunks();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,8 +106,8 @@ public class WorldStorage {
             Set<Chunk> chunkSet = new HashSet<>();
             for(String c : chunkData) {
                 String[] data = c.split(":");
-                chunkSet.add(NoItemExplode.getPluginServer().getWorld(data[0])
-                        .getChunkAt(Integer.parseInt(data[1]), Integer.parseInt(data[2])));
+                World w = NoItemExplode.getPluginServer().getWorld(data[0]);
+                if(w != null) chunkSet.add(w.getChunkAt(Integer.parseInt(data[1]), Integer.parseInt(data[2])));
             }
             chunks = chunkSet;
         }

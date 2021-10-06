@@ -31,22 +31,22 @@ public final class NoItemExplode extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), this);
 
         try {
-            WorldStorage.loadWorlds();
-            WorldStorage.loadChunks();
+            RegionStorage.loadWorlds();
+            RegionStorage.loadChunks();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Metrics metrics = new Metrics(this, BSTATS_ID);
-        metrics.addCustomChart(new SimplePie("worldsProtected", WorldStorage::getWorldsProtected));
+        metrics.addCustomChart(new SimplePie("worldsProtected", RegionStorage::getWorldsProtected));
 
     }
 
     @Override
     public void onDisable() {
         try {
-            WorldStorage.saveWorlds();
-            WorldStorage.saveChunks();
+            RegionStorage.saveWorlds();
+            RegionStorage.saveChunks();
         } catch (IOException e) {
             e.printStackTrace();
         }

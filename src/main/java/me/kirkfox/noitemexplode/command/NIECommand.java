@@ -1,6 +1,6 @@
 package me.kirkfox.noitemexplode.command;
 
-import me.kirkfox.noitemexplode.WorldStorage;
+import me.kirkfox.noitemexplode.RegionStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -27,8 +27,8 @@ public class NIECommand implements CommandExecutor {
             p = (Player) sender;
             w = p.getWorld();
             c = p.getLocation().getChunk();
-            isProtectedWorld = WorldStorage.isProtectedWorld(w);
-            isProtectedChunk = WorldStorage.isProtectedChunk(c);
+            isProtectedWorld = RegionStorage.isProtectedWorld(w);
+            isProtectedChunk = RegionStorage.isProtectedChunk(c);
             if(args.length == 0) {
                 p.sendMessage(ChatColor.BLUE + "This " + ChatColor.BOLD + "world" + ChatColor.RESET + ChatColor.BLUE +
                                 " is " + ((isProtectedWorld) ? ChatColor.GREEN + "protected " : ChatColor.RED + "not protected ") +
@@ -63,9 +63,9 @@ public class NIECommand implements CommandExecutor {
                 p.sendMessage(String.format(NO_PERM, region));
             } else if (((isChunk) ? isProtectedChunk : isProtectedWorld) ^ isOn) {
                 if (isChunk) {
-                    WorldStorage.toggleChunk(c);
+                    RegionStorage.toggleChunk(c);
                 } else {
-                    WorldStorage.toggleWorld(w);
+                    RegionStorage.toggleWorld(w);
                 }
                 p.sendMessage(color + String.format(PROT_TOGGLE, region, prot));
             } else {
