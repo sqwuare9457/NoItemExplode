@@ -13,7 +13,7 @@ public class EntityDamageByEntityListener implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
         if(e.getEntity() instanceof Item && RegionStorage.isProtectedChunk(e.getEntity().getLocation().getChunk()) &&
-                e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION) {
+                e.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
             Item i = (Item) e.getEntity();
             if(ConfigHandler.shouldProtect(i.getItemStack().getType(), e.getDamager().getType())) {
                 e.setCancelled(true);
